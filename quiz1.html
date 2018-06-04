@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Rules Quiz</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js"></script>
+
+        <script type="text/template" id="template">
+        <div class="card">
+            <h1> {{description}} </h1>
+            <p>A) {{choice1}} </p>
+            <p>B) {{choice2}} </p>
+            <p>C) {{choice3}}</p>
+            <p>D) {{choice4}}</p>
+            <input id="{{id}}" type="text" placeholder="Enter Choice">
+        </div>
+
+        </script>
+
+
+
+
+
+        <script>
+            var data;
+            function loadJSON(){                
+                $.getJSON("https://basketballproject-f0bea.firebaseio.com/.json",function(results){
+                    data = results;
+                    displayData();
+                })
+            }
+            function displayData(){
+                var build = "";
+                var template =document.getElementById("template").innerHTML;
+                var output =document.getElementById("output");
+                for(var key in data.rules){
+                    build += Mustache.render(template,data.rules[key]);
+                }
+                output.innerHTML =build;
+            }
+            function grade(){
+                var score = 0;
+                for(var i = 1; i <= 4; i++){
+                    var userAnswer =document.getElementById("q" + i).value
+                    var correctAnswer = data.rules["q" + i].answer;
+                    if(userAnswer ==correctAnswer){
+                        score+=25;
+                    }
+                }
+                alert("You score is " + score)
+            }
+            
+        </script>
+    </head>                                                                        
+
+            
+    <body onload="loadJSON()">
+        <div class="container">
+            <div class="jumbotron">
+            <h1>Rules Quiz</h1> 
+        </div>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+            <div class="navbar-header">
+            <a class="navbar-brand" href="#"></a>
+            </div>
+            <ul class="nav navbar-nav">
+            <li class="active"><a href="index.html">Home</a></li>
+            <li><a href="basketball.html">Basketball History</a></li>
+            <li><a href="rules.html">Rules</a></li>
+            <li><a href="basketballPlayers.html">Players</a></li> 
+            <li><a href="quiz0.html">History Quiz</a></li>
+            <li><a href="quiz1.html">Rules Quiz</a></li>
+            </ul>
+        </div>
+        </nav>
+        <div class="container">
+            <div id="output"></div>
+            <button onclick="grade()">Grade</button>
+        </div>
+       
+    </body>
+
+</html>
