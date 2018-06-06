@@ -47,7 +47,7 @@
                 for(var i = 1; i <= 4; i++){
                     var userAnswer =document.getElementById("q" + i).value
                     var correctAnswer = data.rules["q" + i].answer;
-                    if(userAnswer ==correctAnswer){
+                    if(userAnswer.toLowerCase() ==correctAnswer){
                         score+=25;
                     }
                 }
